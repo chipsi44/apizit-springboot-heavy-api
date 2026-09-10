@@ -16,5 +16,7 @@ jobs:
           java-version: '21'
           cache: maven
       - run: mvn -B verify
+      - name: Verify native dependencies fit the managed Linux ABI
+        run: python3 scripts/check_native_abi.py
       - name: Call the packaged API over HTTP including its real 80-second response
         run: python3 scripts/http_smoke.py
