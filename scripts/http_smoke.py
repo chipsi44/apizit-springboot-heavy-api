@@ -41,6 +41,9 @@ with (project / "target/http-smoke.log").open("w", encoding="utf-8") as log:
         assert request("/items/7?include_details=true") == {
             "item_id": 7, "include_details": True, "details": "Reference item 7",
         }
+        ready = request("/ready", timeout=60)
+        assert ready == {"status": "ready", "models": {"text": True, "image": True},
+                         "device": "cpu"}
         started = time.monotonic()
         assert request("/slow", timeout=90) == {"delay_seconds": 80, "status": "completed"}
         elapsed = time.monotonic() - started
